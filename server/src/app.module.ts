@@ -8,12 +8,13 @@ import {
 import * as winston from 'winston';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { LoggingMiddleware } from './log/logging.middleware';
 import { LoggingService } from './log/logging.service';
 import { UserModule } from './user/user.module';
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: `.env` }),
+    ConfigModule.forRoot({ envFilePath: `.env`, isGlobal: true }),
     WinstonModule.forRoot({
       transports: [
         new winston.transports.Console({
@@ -40,6 +41,7 @@ import { UserModule } from './user/user.module';
       synchronize: true,
       logging: true,
     }),
+    AuthModule,
     UserModule,
   ],
   controllers: [AppController],

@@ -1,47 +1,20 @@
-// src/user/user.controller.ts
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateUserDto } from './dto';
+import { UsersService } from './user.service';
 
-import { CreateUserDto, UpdateUserDto } from './dto';
-import { User } from './user.entity';
-import { UserService } from './user.service';
-
+@ApiTags('users')
 @Controller('users')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.userService.create(createUserDto);
-  }
-
-  @Get()
-  findAll(): Promise<User[]> {
-    return this.userService.findAll();
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<User> {
-    return this.userService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<User> {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.userService.remove(+id);
+  show(@Param('id') id: string) {
+    return this.usersService.showById(+id);
   }
 }

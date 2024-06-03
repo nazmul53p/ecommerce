@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
-// src/user/dto/create-user.dto.ts
-export class CreateUserDto {
+export class AuthLoginDto {
   @ApiProperty()
   @IsEmail()
   email: string;
