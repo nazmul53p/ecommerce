@@ -11,9 +11,6 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { LoggingMiddleware } from './log/logging.middleware';
 import { LoggingService } from './log/logging.service';
-import { PermissionModule } from './permission/permission.module';
-import { RoleModule } from './role/role.module';
-import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: `.env`, isGlobal: true }),
@@ -44,9 +41,6 @@ import { UserModule } from './user/user.module';
       logging: true,
     }),
     AuthModule,
-    UserModule,
-    RoleModule,
-    PermissionModule,
   ],
   controllers: [AppController],
   providers: [AppService, LoggingService],

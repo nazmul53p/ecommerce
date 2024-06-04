@@ -3,8 +3,7 @@ import { IsString } from 'class-validator';
 
 export class CreatePermissionDto {
   @ApiProperty({
-    description: 'The name of the permission',
-    example: 'create:role',
+    example: 'create',
   })
   @IsString()
   permissionName: string;
