@@ -6,5 +6,5 @@ export class CreatePermissionDto {
     example: 'create',
   })
   @IsString()
-  permissionName: string;
+  name: string;
 }

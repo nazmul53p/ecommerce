@@ -19,4 +19,10 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   password: string;
+
+  @ApiProperty({
+    example: 1,
+  })
+  @IsNotEmpty()
+  roleId: number;
 }

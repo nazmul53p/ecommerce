@@ -4,7 +4,9 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -14,11 +16,22 @@ export class Role extends BaseEntity {
   id: number;
 
   @Column({ unique: true })
-  roleName: string;
+  name: string;
 
-  @ManyToMany(() => User, (user) => user.roles)
+  @OneToMany(() => User, (user) => user.role)
   users: User[];
 
   @ManyToMany(() => Permission, (permission) => permission.roles)
+  @JoinTable({
+    name: 'role_permissions',
+    joinColumn: {
+      name: 'role_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'permission_id',
+      referencedColumnName: 'id',
+    },
+  })
   permissions: Permission[];
 }

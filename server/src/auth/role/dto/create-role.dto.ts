@@ -13,21 +13,13 @@ export class CreateRoleDto {
   })
   @IsString()
   @IsNotEmpty()
-  roleName: string;
+  name: string;
 
   @ApiProperty({
-    example: [1, 2, 3],
+    example: [1, 2],
   })
+  @IsOptional()
   @IsArray()
   @ArrayUnique()
-  @IsOptional()
-  users?: number[];
-
-  @ApiProperty({
-    example: [1, 2, 3],
-  })
-  @IsArray()
-  @ArrayUnique()
-  @IsOptional()
-  permissions?: number[];
+  permissions: number[];
 }
