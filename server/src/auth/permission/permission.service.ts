@@ -1,22 +1,27 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { Permission } from './entities/permission.entity';
 
 @Injectable()
 export class PermissionService {
+  constructor(
+    @InjectRepository(Permission)
+    private readonly userRepository: Repository<Permission>,
+  ) {}
+
   async create(createPermissionDto: CreatePermissionDto): Promise<Permission> {
-    const permission = new Permission();
-    Object.assign(permission, createPermissionDto);
-    await permission.save();
-    return permission;
+    const permission = this.userRepository.create(createPermissionDto);
+    return this.userRepository.save(permission);
   }
 
   async findAll(): Promise<Permission[]> {
-    return await Permission.find();
+    return await this.userRepository.find();
   }
 
-  findOne(id: number): Promise<Permission> {
-    return Permission.findOne({
+  async findOne(id: number): Promise<Permission> {
+    return await this.userRepository.findOne({
       where: {
         id,
       },
@@ -27,22 +32,30 @@ export class PermissionService {
     id: number,
     updateData: Partial<Permission>,
   ): Promise<Permission> {
-    const permission = await Permission.findOne({
+    const existingPermission = await this.userRepository.findOne({
       where: {
         id,
       },
     });
-    Object.assign(permission, updateData);
-    await permission.save();
-    return permission;
+    if (!existingPermission) {
+      throw new Error('Permission not found');
+    }
+    const permission = this.userRepository.merge(
+      existingPermission,
+      updateData,
+    );
+    return this.userRepository.save(permission);
   }
 
   async remove(id: number): Promise<void> {
-    const permission = await Permission.findOne({
+    const existingPermission = await this.userRepository.findOne({
       where: {
         id,
       },
     });
-    await permission.remove();
+    if (!existingPermission) {
+      throw new Error('Permission not found');
+    }
+    await this.userRepository.remove(existingPermission);
   }
 }

@@ -13,7 +13,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'auth/jwt-auth.guard';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
-import { Permission } from './entities/permission.entity';
 import { PermissionService } from './permission.service';
 
 @UseGuards(JwtAuthGuard)
@@ -24,30 +23,89 @@ export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 
   @Post()
-  create(@Body() createPermissionDto: CreatePermissionDto) {
-    return this.permissionService.create(createPermissionDto);
+  async create(@Body() createPermissionDto: CreatePermissionDto) {
+    try {
+      await this.permissionService.create(createPermissionDto);
+      return {
+        success: true,
+        message: 'Permission Created Successfully',
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
   }
 
   @Get()
-  findAll(): Promise<Permission[]> {
-    return this.permissionService.findAll();
+  async findAll() {
+    try {
+      const data = await this.permissionService.findAll();
+      return {
+        success: true,
+        data,
+        message: 'Permissions Fetched Successfully',
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Permission> {
-    return this.permissionService.findOne(id);
+  async findOne(@Param('id') id: number) {
+    try {
+      const data = await this.permissionService.findOne(+id);
+      return {
+        success: true,
+        data,
+        message: 'Permission Fetched Successfully',
+      };
+    } catch (error) {
+      return {
+        success: false,
+        data: null,
+        message: error.message,
+      };
+    }
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id') id: number,
     @Body() updatePermissionDto: UpdatePermissionDto,
-  ): Promise<Permission> {
-    return this.permissionService.update(id, updatePermissionDto);
+  ) {
+    try {
+      await this.permissionService.update(+id, updatePermissionDto);
+      return {
+        success: true,
+        message: 'Permission Updated Successfully',
+      };
+    } catch (error) {
+      return {
+        success: false,
+        data: null,
+        message: error.message,
+      };
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number): Promise<void> {
-    return this.permissionService.remove(id);
+  async remove(@Param('id') id: number) {
+    try {
+      await this.permissionService.remove(+id);
+      return {
+        success: true,
+        message: 'Permission Deleted Successfully',
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
   }
 }
