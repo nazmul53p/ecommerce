@@ -30,7 +30,7 @@ export class UsersService {
   }
 
   async showById(id: number): Promise<User> {
-    const user = await User.findOne({
+    const user = await this.userRepository.findOne({
       where: {
         id: id,
       },
