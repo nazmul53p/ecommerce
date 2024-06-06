@@ -11,6 +11,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { LoggingMiddleware } from './log/logging.middleware';
 import { LoggingService } from './log/logging.service';
+import { MenuModule } from './menu/menu.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: `.env`, isGlobal: true }),
@@ -41,6 +42,7 @@ import { LoggingService } from './log/logging.service';
       logging: true,
     }),
     AuthModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [AppService, LoggingService],

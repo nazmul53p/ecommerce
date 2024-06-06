@@ -1,4 +1,5 @@
 import { Role } from 'auth/role/entities/role.entity';
+import { Menu } from 'menu/entities/menu.entity';
 import {
   BaseEntity,
   Column,
@@ -17,4 +18,7 @@ export class Permission extends BaseEntity {
 
   @ManyToMany(() => Role, (role) => role.permissions)
   roles: Role[];
+
+  @ManyToMany(() => Menu, (menu) => menu.permissions)
+  menus: Menu[];
 }
