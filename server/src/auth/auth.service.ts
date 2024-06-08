@@ -22,7 +22,6 @@ export class AuthService {
 
     const payload = {
       email: user.email,
-      role: user.role,
     };
 
     return {
@@ -37,7 +36,6 @@ export class AuthService {
     if (!(await user?.validatePassword(password))) {
       throw new UnauthorizedException();
     }
-
     return user;
   }
 }

@@ -29,7 +29,6 @@ export class AuthController {
   @AccessRoles(['admin'])
   @UseGuards(JwtAuthGuard, RoleGuard)
   async test(@Req() req: UserAndRequest) {
-    console.log('User:', req.user.role.name);
     return req.user;
   }
 }

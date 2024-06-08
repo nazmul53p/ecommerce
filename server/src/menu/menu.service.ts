@@ -28,18 +28,42 @@ export class MenuService {
   }
 
   findAll() {
-    return `This action returns all menu`;
+    return this.menuRepository
+      .find({
+        relations: ['permissions', 'parent'],
+      })
+      .then((menus) =>
+        menus.map((menu) => ({
+          ...menu,
+          parent: menu.parent ? menu.parent.id : null,
+        })),
+      );
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} menu`;
+    return this.menuRepository.find({
+      where: { id },
+      relations: ['permissions'],
+      select: ['id', 'name', 'parent', 'permissions'],
+    });
   }
 
-  update(id: number, updateMenuDto: UpdateMenuDto) {
-    return `This action updates a #${id} menu`;
+  async update(id: number, updateMenuDto: UpdateMenuDto) {
+    const menu = await this.menuRepository.findOne({
+      where: { id },
+      relations: ['permissions'],
+    });
+    menu.name = updateMenuDto.name;
+    menu.parent = updateMenuDto.parent;
+    menu.permissions = await this.permissionRepository.find({
+      where: {
+        id: In(updateMenuDto.permissions),
+      },
+    });
+    return this.menuRepository.save(menu);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} menu`;
+    return this.menuRepository.delete(id);
   }
 }

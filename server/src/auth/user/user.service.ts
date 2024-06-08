@@ -40,6 +40,18 @@ export class UsersService {
     return user;
   }
 
+  async showByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: {
+        email: email,
+      },
+      relations: ['role', 'role.permissions'],
+      select: ['id', 'name', 'email', 'role'],
+    });
+
+    return user;
+  }
+
   async findById(id: number) {
     return await User.findOne(id as FindOneOptions<User>);
   }
@@ -51,7 +63,6 @@ export class UsersService {
       },
       relations: ['role', 'role.permissions'],
     });
-    delete user.password;
     return user;
   }
 }

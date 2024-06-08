@@ -17,7 +17,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!payload.email) {
       throw new UnauthorizedException('Invalid token');
     }
+    const user = await this.usersService.showByEmail(payload.email);
+    if (!user) {
+      throw new UnauthorizedException('Invalid token');
+    }
 
-    return await this.usersService.findByEmail(payload.email);
+    return user;
   }
 }
