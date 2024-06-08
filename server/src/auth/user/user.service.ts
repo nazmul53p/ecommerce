@@ -34,6 +34,7 @@ export class UsersService {
       where: {
         id: id,
       },
+      relations: ['role', 'role.permissions'],
     });
     delete user.password;
     return user;
