@@ -45,10 +45,13 @@ export class UsersService {
   }
 
   async findByEmail(email: string) {
-    return await User.findOne({
+    const user = await this.userRepository.findOne({
       where: {
         email: email,
       },
+      relations: ['role', 'role.permissions'],
     });
+    delete user.password;
+    return user;
   }
 }

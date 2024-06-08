@@ -6,6 +6,8 @@ import { UserAndRequest } from 'types';
 import { AuthService } from './auth.service';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { AccessRoles } from './role/role.decorator';
+import { RoleGuard } from './role/role.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -22,11 +24,12 @@ export class AuthController {
     return this.authService.login(authLoginDto);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @Get('profile')
+  @ApiBearerAuth()
+  @AccessRoles(['admin'])
+  @UseGuards(JwtAuthGuard, RoleGuard)
   async test(@Req() req: UserAndRequest) {
-    console.log('User:', req.user);
+    console.log('User:', req.user.role.name);
     return req.user;
   }
 }
