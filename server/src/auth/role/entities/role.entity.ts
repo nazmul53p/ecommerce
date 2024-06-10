@@ -3,11 +3,13 @@ import { User } from 'auth/user/user.entity';
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -34,4 +36,21 @@ export class Role extends BaseEntity {
     },
   })
   permissions: Permission[];
+
+  @Column()
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Column()
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @Column()
+  createBy: number;
+
+  @Column()
+  updateBy: number;
+
+  @Column({ default: true })
+  status: boolean;
 }
