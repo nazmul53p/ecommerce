@@ -3,11 +3,13 @@
 import { Permission } from 'auth/permission/entities/permission.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -34,4 +36,21 @@ export class Menu {
     },
   })
   permissions: Permission[];
+
+  @Column()
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Column()
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @Column()
+  createBy: number;
+
+  @Column()
+  updateBy: number;
+
+  @Column({ default: true })
+  status: boolean;
 }

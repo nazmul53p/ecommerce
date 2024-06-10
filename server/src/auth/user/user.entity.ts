@@ -26,6 +26,10 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
+  @ManyToOne(() => Role, (role) => role.users)
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
+
   @Column()
   @CreateDateColumn()
   createdAt: Date;
@@ -34,9 +38,14 @@ export class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => Role, (role) => role.users)
-  @JoinColumn({ name: 'role_id' })
-  role: Role;
+  @Column()
+  createBy: number;
+
+  @Column()
+  updateBy: number;
+
+  @Column({ default: true })
+  status: boolean;
 
   @BeforeInsert()
   async hashPassword() {
