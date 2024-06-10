@@ -9,7 +9,7 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 import { AccessRoles } from './role/role.decorator';
 import { RoleGuard } from './role/role.guard';
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

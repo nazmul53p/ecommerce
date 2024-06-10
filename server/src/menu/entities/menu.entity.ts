@@ -45,12 +45,12 @@ export class Menu {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column()
+  @Column({ default: 0 })
   createBy: number;
 
-  @Column()
+  @Column({ default: 0 })
   updateBy: number;
 
-  @Column({ default: true })
-  status: boolean;
+  @Column({ default: 1 })
+  status: number;
 }

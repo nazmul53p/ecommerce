@@ -26,6 +26,9 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
+  @Column({ default: 0 })
+  isSuperAdmin: number;
+
   @ManyToOne(() => Role, (role) => role.users)
   @JoinColumn({ name: 'role_id' })
   role: Role;
@@ -38,14 +41,14 @@ export class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column()
+  @Column({ default: 0 })
   createBy: number;
 
-  @Column()
+  @Column({ default: 0 })
   updateBy: number;
 
-  @Column({ default: true })
-  status: boolean;
+  @Column({ default: 1 })
+  status: number;
 
   @BeforeInsert()
   async hashPassword() {
