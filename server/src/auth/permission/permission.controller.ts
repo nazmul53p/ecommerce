@@ -6,9 +6,11 @@ import {
   Param,
   Post,
   Put,
+  Req,
 } from '@nestjs/common';
 
 import { ApiTags } from '@nestjs/swagger';
+import { UserAndRequest } from 'types';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { PermissionService } from './permission.service';
@@ -21,8 +23,12 @@ export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 
   @Post()
-  async create(@Body() createPermissionDto: CreatePermissionDto) {
+  async create(
+    @Req() req: UserAndRequest,
+    @Body() createPermissionDto: CreatePermissionDto,
+  ) {
     try {
+      createPermissionDto.createBy = req.user.id || 0;
       await this.permissionService.create(createPermissionDto);
       return {
         success: true,
@@ -73,10 +79,12 @@ export class PermissionController {
 
   @Put(':id')
   async update(
+    @Req() req: UserAndRequest,
     @Param('id') id: number,
     @Body() updatePermissionDto: UpdatePermissionDto,
   ) {
     try {
+      updatePermissionDto.updateBy = req.user.id || 0;
       await this.permissionService.update(+id, updatePermissionDto);
       return {
         success: true,

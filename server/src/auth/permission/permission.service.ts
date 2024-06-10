@@ -17,13 +17,21 @@ export class PermissionService {
   }
 
   async findAll(): Promise<Permission[]> {
-    return await this.userRepository.find();
+    return await this.userRepository.find({
+      where: {
+        status: 1,
+      },
+      order: {
+        id: 'DESC',
+      },
+    });
   }
 
   async findOne(id: number): Promise<Permission> {
     return await this.userRepository.findOne({
       where: {
         id,
+        status: 1,
       },
     });
   }
@@ -35,11 +43,13 @@ export class PermissionService {
     const existingPermission = await this.userRepository.findOne({
       where: {
         id,
+        status: 1,
       },
     });
     if (!existingPermission) {
       throw new Error('Permission not found');
     }
+    updateData.updateBy = user?.id || 0;
     const permission = this.userRepository.merge(
       existingPermission,
       updateData,
