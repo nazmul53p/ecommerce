@@ -20,4 +20,25 @@ export class CreateMenuDto {
   @IsArray()
   @IsOptional()
   permissions: number[];
+
+  @ApiProperty({
+    example: 1,
+  })
+  @IsOptional()
+  @IsNumber()
+  createBy: number;
+
+  @IsOptional()
+  @ApiProperty({
+    example: 1,
+  })
+  @IsNumber()
+  updateBy: number;
+
+  @IsOptional()
+  @ApiProperty({
+    example: 1,
+  })
+  @IsNumber()
+  status: number;
 }
