@@ -6,6 +6,7 @@ export interface UserAndRequest extends Request {
     id: number;
     name: string;
     email: string;
+    isSuperAdmin: number;
     role: Role & { permissions: Permission[] };
   };
 }

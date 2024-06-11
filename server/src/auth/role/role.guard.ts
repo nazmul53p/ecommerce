@@ -17,6 +17,6 @@ export class RoleGuard implements CanActivate {
     const user = request.user;
 
     const hasRole = this.matchRoles(roles, user.role.name);
-    return hasRole;
+    return hasRole || user.isSuperAdmin === 1;
   }
 }

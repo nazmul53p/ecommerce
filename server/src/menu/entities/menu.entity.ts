@@ -20,6 +20,7 @@ export class Menu {
 
   @Column()
   name: string;
+
   @Column({ nullable: true })
   slug: string;
 
