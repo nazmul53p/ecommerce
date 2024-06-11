@@ -2,6 +2,7 @@
 
 import { Permission } from 'auth/permission/entities/permission.entity';
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -19,6 +20,8 @@ export class Menu {
 
   @Column()
   name: string;
+  @Column({ nullable: true })
+  slug: string;
 
   @ManyToOne(() => Menu, (menu) => menu.id, { nullable: true })
   parent: Menu;
@@ -53,4 +56,9 @@ export class Menu {
 
   @Column({ default: 1 })
   status: number;
+
+  @BeforeInsert()
+  async generatorSlug() {
+    this.slug = this.name.toLowerCase().replace(/ /g, '-');
+  }
 }

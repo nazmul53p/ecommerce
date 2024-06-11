@@ -2,6 +2,7 @@ import { Role } from 'auth/role/entities/role.entity';
 import { Menu } from 'menu/entities/menu.entity';
 import {
   BaseEntity,
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -17,6 +18,9 @@ export class Permission extends BaseEntity {
 
   @Column({ unique: true })
   name: string;
+
+  @Column({ nullable: true })
+  slug: string;
 
   @ManyToMany(() => Role, (role) => role.permissions)
   roles: Role[];
@@ -40,4 +44,9 @@ export class Permission extends BaseEntity {
 
   @Column({ default: 1 })
   status: number;
+
+  @BeforeInsert()
+  async generatorSlug() {
+    this.slug = this.name.toLowerCase().replace(/ /g, '-');
+  }
 }

@@ -2,6 +2,7 @@ import { Permission } from 'auth/permission/entities/permission.entity';
 import { User } from 'auth/user/user.entity';
 import {
   BaseEntity,
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -19,6 +20,9 @@ export class Role extends BaseEntity {
 
   @Column({ unique: true })
   name: string;
+
+  @Column({ nullable: true })
+  slug: string;
 
   @OneToMany(() => User, (user) => user.role)
   users: User[];
@@ -53,4 +57,9 @@ export class Role extends BaseEntity {
 
   @Column({ default: 1 })
   status: number;
+
+  @BeforeInsert()
+  async generatorSlug() {
+    this.slug = this.name.toLowerCase().replace(/ /g, '-');
+  }
 }
