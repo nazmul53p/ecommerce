@@ -28,7 +28,6 @@ export class PermissionController {
     @Body() createPermissionDto: CreatePermissionDto,
   ) {
     try {
-      createPermissionDto.createBy = req.user.id || 0;
       await this.permissionService.create(createPermissionDto);
       return {
         success: true,

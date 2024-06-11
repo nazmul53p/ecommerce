@@ -49,7 +49,7 @@ export class PermissionService {
     if (!existingPermission) {
       throw new Error('Permission not found');
     }
-    updateData.updateBy = user?.id || 0;
+
     const permission = this.userRepository.merge(
       existingPermission,
       updateData,
@@ -66,6 +66,10 @@ export class PermissionService {
     if (!existingPermission) {
       throw new Error('Permission not found');
     }
-    await this.userRepository.remove(existingPermission);
+    const permission = this.userRepository.merge(existingPermission, {
+      status: 0,
+    });
+
+    this.userRepository.save(permission);
   }
 }
