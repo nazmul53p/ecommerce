@@ -24,6 +24,9 @@ export class Menu {
   @Column({ nullable: true })
   slug: string;
 
+  @Column({ nullable: true })
+  link: string;
+
   @ManyToOne(() => Menu, (menu) => menu.id, { nullable: true })
   parent: Menu;
 
@@ -57,6 +60,12 @@ export class Menu {
 
   @Column({ default: 1 })
   status: number;
+
+  @BeforeInsert()
+  async generatorLinkIfUserNotGiven() {
+    if (this.link) return;
+    this.link = `/${this.name.toLowerCase().replace(/ /g, '-')}`;
+  }
 
   @BeforeInsert()
   async generatorSlug() {
