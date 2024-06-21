@@ -8,12 +8,15 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
-  ManyToOne,
   PrimaryGeneratedColumn,
+  Tree,
+  TreeChildren,
+  TreeParent,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
+@Tree('nested-set')
 export class Menu {
   @PrimaryGeneratedColumn()
   id: number;
@@ -27,8 +30,11 @@ export class Menu {
   @Column({ nullable: true })
   link: string;
 
-  @ManyToOne(() => Menu, (menu) => menu.id, { nullable: true })
+  @TreeParent()
   parent: Menu;
+
+  @TreeChildren()
+  children: Menu[];
 
   @ManyToMany(() => Permission, (permission) => permission.roles)
   @JoinTable({

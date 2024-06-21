@@ -18,7 +18,15 @@ export class MenuService {
   async create(createMenuDto: CreateMenuDto): Promise<Menu> {
     const menu = new Menu();
     menu.name = createMenuDto.name;
-    menu.parent = createMenuDto.parent;
+
+    if (createMenuDto.parent.id) {
+      const parent = await this.menuRepository.findOne({
+        where: { id: createMenuDto.parent.id },
+      });
+      if (parent) {
+        menu.parent = parent;
+      }
+    }
     menu.permissions = await this.permissionRepository.find({
       where: {
         id: In(createMenuDto.permissions),
@@ -54,7 +62,14 @@ export class MenuService {
       relations: ['permissions'],
     });
     menu.name = updateMenuDto.name;
-    menu.parent = updateMenuDto.parent;
+    if (updateMenuDto.parent.id) {
+      const parent = await this.menuRepository.findOne({
+        where: { id: updateMenuDto.parent.id },
+      });
+      if (parent) {
+        menu.parent = parent;
+      }
+    }
     menu.permissions = await this.permissionRepository.find({
       where: {
         id: In(updateMenuDto.permissions),

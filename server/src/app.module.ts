@@ -13,6 +13,7 @@ import { LoggingMiddleware } from './log/logging.middleware';
 import { LoggingService } from './log/logging.service';
 import { MenuModule } from './menu/menu.module';
 import { PagesModule } from './pages/pages.module';
+import { ComponentsModule } from './components/components.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: `.env`, isGlobal: true }),
@@ -45,6 +46,7 @@ import { PagesModule } from './pages/pages.module';
     AuthModule,
     MenuModule,
     PagesModule,
+    ComponentsModule,
   ],
   controllers: [AppController],
   providers: [AppService, LoggingService],
