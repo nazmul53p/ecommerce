@@ -36,23 +36,15 @@ export class MenuService {
   }
 
   findAll() {
-    return this.menuRepository
-      .find({
-        relations: ['permissions', 'parent'],
-      })
-      .then((menus) =>
-        menus.map((menu) => ({
-          ...menu,
-          parent: menu.parent ? menu.parent.id : null,
-        })),
-      );
+    return this.menuRepository.find({
+      relations: ['permissions', 'parent', 'children'],
+    });
   }
 
   findOne(id: number) {
-    return this.menuRepository.find({
+    return this.menuRepository.findOne({
       where: { id },
-      relations: ['permissions'],
-      select: ['id', 'name', 'parent', 'permissions'],
+      relations: ['permissions', 'parent', 'children'],
     });
   }
 
